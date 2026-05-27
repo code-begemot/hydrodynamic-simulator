@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Расчеты модели</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Расчеты модели</h1>
+
+    {% if current_model %}
+        <p><strong> Текущая модель: </strong>{{ current_model }}</p>
+        <p><strong> Файлы на сервере: </strong>{{ files_on_server | join(", ") }}</p>
+
+        <!-- Загруженные данные -->
+        <div class="card mt-4 shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                Загруженные данные
+            </div>
+            <div class="card-body">
+                <h5>GRID</h5>
+                <ul>
+                    {% for key, value in grid.items() %}
+                        <li><strong>{{ key }}:</strong> {{ value | length }}</li>
+                    {% endfor %}
+                </ul>
+
+                <h5>INIT</h5>
+                <ul>
+                    {% for key, value in init.items() %}
+                        <li><strong>{{ key }}:</strong> {{ value | length }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Кнопка построения графиков -->
+        <div class="mt-4">
+            <a href="/plot" class="btn btn-success">Построить графики</a>
+        </div>
+
+    {% else %}
+        <p class="text-muted">Модель не загружена</p>
+    {% endif %}
+
+    <a href="/" class="btn btn-primary mt-3">Назад</a>
+</div>
+</body>
+</html>

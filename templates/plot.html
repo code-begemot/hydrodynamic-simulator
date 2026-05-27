@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Графики</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Графики модели</h1>
+
+    {% if current_model %}
+        <p>Текущая модель: <strong>{{ current_model }}</strong></p>
+    {% endif %}
+
+    {% if plot_urls %}
+        <div class="row">
+            {% for title, url in plot_urls.items() %}
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ title }}</h5>
+                            <img src="{{ url }}" alt="{{ title }}" class="img-fluid rounded">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">Нет данных для построения графиков.</p>
+    {% endif %}
+
+    <a href="/" class="btn btn-primary mt-3">Назад</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+__pycache__/
+.idea/
+static/plots/
+uploads/
+*.pyc
+.DS_Store

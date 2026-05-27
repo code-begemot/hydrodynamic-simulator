@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Гидродинамический симулятор</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Гидродинамический симулятор</h1>
+
+    <!-- Кнопка "Расчеты" -->
+    <div class="text-center mb-4">
+        {% if current_model %}
+            <a href="/calculate" class="btn btn-success btn-lg">Расчеты</a>
+        {% else %}
+            <button class="btn btn-success btn-lg" disabled>Расчеты</button>
+        {% endif %}
+    </div>
+
+    <!-- Блок основной модели -->
+    <div class="card mb-4">
+        <div class="card-header">Основная модель</div>
+        <div class="card-body">
+            {% if current_model %}
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ current_model }}
+                        <div>
+                            <span class="badge bg-success me-2">Загружен</span>
+                            <form action="/upload" method="post" enctype="multipart/form-data" class="d-inline">
+                                <input type="file" name="file" class="form-control d-inline" style="width:auto; display:inline-block;" required>
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Загрузить</button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            {% else %}
+                <form action="/upload" method="post" enctype="multipart/form-data" class="d-inline">
+                    <input type="file" name="file" class="form-control d-inline" style="width:auto; display:inline-block;" required>
+                    <button type="submit" class="btn btn-sm btn-outline-primary">Загрузить</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Параметры модели -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Параметры модели</div>
+                <div class="card-body">
+                    {% if params %}
+                        <ul class="list-group">
+                            {% for key, value in params.items() %}
+                                <li class="list-group-item">
+                                    <strong>{{ key }}:</strong>
+                                    {% if value is sequence and value is not string %}
+                                        {{ value | join(" ") }}
+                                    {% else %}
+                                        {{ value }}
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Параметры модели пока не загружены</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Include файлы -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Найденные include</div>
+                <div class="card-body">
+                    {% if files %}
+                        <ul class="list-group">
+                            {% for f in files %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {{ f }}
+                                    <div>
+                                        {% if f in files_on_server %}
+                                            <span class="badge bg-success me-2">Загружен</span>
+                                            <form action="/delete_file" method="post" class="d-inline">
+                                                <input type="hidden" name="filename" value="{{ f }}">
+                                                <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                                            </form>
+                                        {% else %}
+                                            <form action="/upload_include" method="post" enctype="multipart/form-data" class="d-inline">
+                                                <input type="hidden" name="include_name" value="{{ f }}">
+                                                <input type="file" name="file" class="form-control d-inline" style="width:auto; display:inline-block;" required>
+                                                <button type="submit" class="btn btn-sm btn-outline-primary">Загрузить</button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Файлы пока не загружены</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
