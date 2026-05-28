@@ -1,0 +1,31 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "bash": {
+      "git commit *": "deny",
+      "git push *": "deny",
+      "rm *": "deny",
+      "pip *": "ask",
+      "pipenv *": "ask"
+    },
+    "edit": {
+      "/home/ed_ubuntu/projects/*": "allow",
+      "*": "deny"
+    },
+    "read": {
+      "/home/ed_ubuntu/projects/*": "allow",
+      "*": "allow"
+    }
+  },
+  "mcp": {
+    "playwright": {
+      "type": "local",
+      "command": [
+        ".opencode/playwright-mcp.sh",
+        "--no-sandbox",
+        "--headless"
+      ],
+      "environment": {}
+    }
+  }
+}
